@@ -1,15 +1,5 @@
 <script setup>
 import {computed} from "vue";
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
-
-// Import Swiper Vue.js components
-import { Swiper, SwiperSlide } from 'swiper/vue';
-
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
 
 const props = defineProps({
   cardData: {
@@ -18,17 +8,32 @@ const props = defineProps({
   }
 })
 
-// const getImage = computed(() => {
-//   return `https://image.tmdb.org/t/p/w200${props.cardData.poster_path}`
-// })
+const getImage = computed(() => {
+  return `https://image.tmdb.org/t/p/w200${props.cardData.poster_path}`
+})
 </script>
 
 <template>
-
+  <div class="news-card-component">
+    <img
+        :src="getImage"
+        class="news-card-component__img"
+        alt=""
+    >
+    <div class="">
+      <p>{{cardData.name}}</p>
+    </div>
+  </div>
 </template>
 
 <style scoped lang="scss">
 .news-card-component {
-
+  border: 1px solid #e3e3e3;
+  box-shadow: 0 2px 8px rgba(0,0,0,.1);
+  border-radius: 10px;
+  &__img {
+    width: 100%;
+    border-radius: 10px 10px 0 0;
+  }
 }
 </style>
