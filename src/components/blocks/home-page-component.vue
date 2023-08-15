@@ -21,25 +21,19 @@ const cardList = ref([]);
 const isLoader = ref(false);
 const page = ref(1)
 const getPopularMovie = async () => {
-  isLoader.value = true;
   try {
     const res = await GetPopularMovie(page.value)
-    cardList.value = res.data.results
+    cardList.value = [...cardList.value, ...res.data.results]
   } catch (e) {
     console.log(e)
-  } finally {
-    isLoader.value = false;
   }
 }
 const getPopularTv = async () => {
-  isLoader.value = true;
   try {
     const res = await GetPopularTv(page.value)
-    cardList.value = res.data.results
+    cardList.value = [...cardList.value, ...res.data.results]
   } catch (e) {
     console.log(e)
-  } finally {
-    isLoader.value = false;
   }
 }
 
@@ -51,11 +45,22 @@ const setTab = (event) => {
 }
 
 const whichFunc = async (val) => {
+  cardList.value = []
   if(val === "tv") {
     await getPopularTv()
   } else {
     await getPopularMovie()
   }
+}
+
+const intersect = () => {
+  // page.value++
+  // whichFunc(currentTab.value)
+  // if(!!query.value.length) {
+  //   SearchPhotos()
+  // } else {
+  //   fetchData()
+  // }
 }
 
 onMounted( () => {
@@ -71,14 +76,11 @@ onMounted( () => {
           :tabs="tabs"
           @input="setTab"
       />
-      <template v-if="isLoader">
-
-      </template>
-      <template v-else>
-        <news-component
-            :news-data="cardList"
-        />
-      </template>
+      <news-component
+          :news-data="cardList"
+          @intersect="intersect"
+          :is-loader="isLoader"
+      />
     </div>
   </div>
 </template>
